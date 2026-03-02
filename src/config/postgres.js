@@ -1,12 +1,16 @@
-import mongoose from 'mongoose';
+import pkg from 'pg';
 import { env } from './env.js';
 
-export async function connectMongo() {
+const { Pool } = pkg;
+
+export const pool = new Pool(env.db);
+
+export async function connectPostgres() {
   try {
-    await mongoose.connect(env.mongoUri);
-    console.log('MongoDB connected ✅');
+    await pool.query('SELECT 1');
+    console.log('PostgreSQL connected ✅');
   } catch (error) {
-    console.error('MongoDB connection error ❌', error);
+    console.error('PostgreSQL connection error ❌', error);
     process.exit(1);
   }
 }
